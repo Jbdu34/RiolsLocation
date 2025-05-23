@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des locations - RiolsLocation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Liste des locations</h1>
+        <a href="{{ path('app_location_new') }}" class="btn btn-primary">Nouvelle location</a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Locations en cours</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Vélo</th>
+                                    <th>Date début</th>
+                                    <th>Date fin</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for location in locations_actives %}
+                                <tr>
+                                    <td>{{ location.client.nom }} {{ location.client.prenom }}</td>
+                                    <td>{{ location.velo.modele }}</td>
+                                    <td>{{ location.dateDebut|date('d/m/Y H:i') }}</td>
+                                    <td>{{ location.dateFin|date('d/m/Y H:i') }}</td>
+                                    <td>
+                                        <a href="{{ path('app_location_show', {'id': location.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                                        <form method="post" action="{{ path('app_location_terminer', {'id': location.id}) }}" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir terminer cette location ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('terminer' ~ location.id) }}">
+                                            <button class="btn btn-sm btn-success">Terminer</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5">Aucune location en cours</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2 class="h5 mb-0">Historique des locations</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Vélo</th>
+                            <th>Date début</th>
+                            <th>Date fin</th>
+                            <th>État</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for location in locations %}
+                        <tr>
+                            <td>{{ location.client.nom }} {{ location.client.prenom }}</td>
+                            <td>{{ location.velo.modele }}</td>
+                            <td>{{ location.dateDebut|date('d/m/Y H:i') }}</td>
+                            <td>{{ location.dateFin|date('d/m/Y H:i') }}</td>
+                            <td>
+                                {% if location.dateFin < date() %}
+                                    <span class="badge bg-secondary">Terminée</span>
+                                {% else %}
+                                    <span class="badge bg-success">En cours</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('app_location_show', {'id': location.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                                {% if location.dateFin > date() %}
+                                    <form method="post" action="{{ path('app_location_terminer', {'id': location.id}) }}" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir terminer cette location ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('terminer' ~ location.id) }}">
+                                        <button class="btn btn-sm btn-success">Terminer</button>
+                                    </form>
+                                {% endif %}
+                                <form method="post" action="{{ path('app_location_delete', {'id': location.id}) }}" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette location ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ location.id) }}">
+                                    <button class="btn btn-sm btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Aucune location trouvée</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

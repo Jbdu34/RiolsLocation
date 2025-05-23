@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le vélo - RiolsLocation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="h3 mb-0">Modifier le vélo</h1>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                    <div class="mb-3">
+                        {{ form_label(form.modele) }}
+                        {{ form_widget(form.modele, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.modele) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.type) }}
+                        {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.type) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.etat) }}
+                        {{ form_widget(form.etat, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.etat) }}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('app_velo_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

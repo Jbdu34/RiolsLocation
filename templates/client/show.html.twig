@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du client - RiolsLocation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="h3 mb-0">Détails du client</h1>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ client.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{ client.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Prénom</th>
+                                <td>{{ client.prenom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ client.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Téléphone</th>
+                                <td>{{ client.telephone }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="mt-4">
+                        <a href="{{ path('app_client_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                        <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="btn btn-warning">Modifier</a>
+                        <form method="post" action="{{ path('app_client_delete', {'id': client.id}) }}" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce client ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ client.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </div>
+
+                    {% if client.locations|length > 0 %}
+                        <div class="mt-4">
+                            <h2 class="h4">Historique des locations</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date début</th>
+                                        <th>Date fin</th>
+                                        <th>Vélo</th>
+                                        <th>État</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for location in client.locations %}
+                                        <tr>
+                                            <td>{{ location.dateDebut|date('d/m/Y H:i') }}</td>
+                                            <td>{{ location.dateFin|date('d/m/Y H:i') }}</td>
+                                            <td>{{ location.velo.modele }}</td>
+                                            <td>
+                                                {% if location.dateFin < date() %}
+                                                    <span class="badge bg-secondary">Terminée</span>
+                                                {% else %}
+                                                    <span class="badge bg-success">En cours</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

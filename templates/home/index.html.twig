@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - RiolsLocation{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto text-center">
+            <h1 class="display-4 mb-4">Bienvenue chez RiolsLocation</h1>
+            <p class="lead mb-4">
+                Découvrez notre service de location de vélos pour tous vos besoins de déplacement.
+                Des vélos de qualité, un service professionnel et des tarifs compétitifs.
+            </p>
+            <div class="mb-5">
+                <h2 class="h4 mb-3">Nos avantages :</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h3 class="h5">Large choix</h3>
+                                <p class="card-text">Vélos de ville, VTT, vélos électriques...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h3 class="h5">Flexibilité</h3>
+                                <p class="card-text">Location à l'heure, à la journée ou plus</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h3 class="h5">Qualité</h3>
+                                <p class="card-text">Entretien régulier de nos vélos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ path('app_velo_index') }}" class="btn btn-primary btn-lg">
+                Voir les vélos disponibles
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

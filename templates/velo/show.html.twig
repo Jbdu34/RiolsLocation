@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du vélo - RiolsLocation{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="h3 mb-0">Détails du vélo</h1>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ velo.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Modèle</th>
+                                <td>{{ velo.modele }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type</th>
+                                <td>{{ velo.type }}</td>
+                            </tr>
+                            <tr>
+                                <th>État</th>
+                                <td>
+                                    {% if velo.etat == 'disponible' %}
+                                        <span class="badge bg-success">{{ velo.etat }}</span>
+                                    {% elseif velo.etat == 'en_location' %}
+                                        <span class="badge bg-warning">En location</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">En maintenance</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="mt-4">
+                        <a href="{{ path('app_velo_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                        <a href="{{ path('app_velo_edit', {'id': velo.id}) }}" class="btn btn-warning">Modifier</a>
+                        <form method="post" action="{{ path('app_velo_delete', {'id': velo.id}) }}" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce vélo ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ velo.id) }}">
+                            <button class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </div>
+
+                    {% if velo.locations|length > 0 %}
+                        <div class="mt-4">
+                            <h2 class="h4">Historique des locations</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date début</th>
+                                        <th>Date fin</th>
+                                        <th>Client</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for location in velo.locations %}
+                                        <tr>
+                                            <td>{{ location.dateDebut|date('d/m/Y H:i') }}</td>
+                                            <td>{{ location.dateFin|date('d/m/Y H:i') }}</td>
+                                            <td>{{ location.client.nom }} {{ location.client.prenom }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
