@@ -37,6 +37,9 @@ class Location
     #[ORM\OneToMany(mappedBy: 'location', targetEntity: Paiement::class)]
     private Collection $paiements;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?float $prix = null;
+
     public function __construct()
     {
         $this->paiements = new ArrayCollection();
@@ -117,6 +120,17 @@ class Location
             }
         }
 
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(?float $prix): static
+    {
+        $this->prix = $prix;
         return $this;
     }
 } 
